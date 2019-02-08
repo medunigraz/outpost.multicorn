@@ -1,6 +1,6 @@
 import re
 from typing import (
-    List,
+    Tuple,
     Optional,
 )
 
@@ -11,15 +11,15 @@ from sqlalchemy.exc import DBAPIError
 
 class OracleDialect_pyodbc(PyODBCConnector, OracleDialect):
 
-    def _get_server_version_info(self, connection) -> Optional[List[int]]:
+    def _get_server_version_info(self, conn) -> Optional[Tuple[int, ...]]:
         try:
-            raw = connection.scalar('SELECT * FROM v$version;')
+            raw = conn.scalar('SELECT * FROM v$version;')
         except DBAPIError:
-            return super()._get_server_version_info(connection)
+            return super()._get_server_version_info(conn)
         else:
             r = re.compile(r' (?P<version>[\d\.]+) ')
             matches = r.search(raw)
             if matches:
                 version = matches.groupdict().get('version', '0')
-                return list(map(int, version.split('.')))
+                return tuple(map(int, version.split('.')))
             return None
