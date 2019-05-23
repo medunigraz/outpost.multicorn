@@ -22,7 +22,6 @@ def read(*names, **kwargs):
 
 setup(
     name='outpost.multicorn',
-    version='0.1.2',
     license='BSD',
     description='Outpost Multicorn Extensions',
     long_description='%s\n%s' % (
@@ -59,6 +58,8 @@ setup(
         'pyodbc',
         'oracle',
     ],
+    use_scm_version=True,
+    setup_requires=['setuptools_scm'],
     install_requires=[
         'sqlalchemy',
         'multicorn',
